@@ -5,18 +5,18 @@ const path = require('path')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
 require('colors');
+dotenv.config({path: './.env'})
 
 const connectDb = require('./config/db')
 
 const chats = require('./data/data')
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes')
 const chatRoutes = require('./routes/chatRoutes')
 const messageRoutes = require('./routes/messageRoutes')
-const { notFound, errorHandler } = require('./middlewares/errorMiddlware');
+const { notFound, errorHandler } = require('./middlewares/errorMiddleware')
 
 
 connectDb()
-dotenv.config({path: './.env'})
 
 
 app.use(express.urlencoded({extended: true}))
