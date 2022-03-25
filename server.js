@@ -7,9 +7,17 @@ const morgan = require('morgan')
 require('colors');
 
 const connectDb = require('./config/db')
-dotenv.config({path: './.env'})
+
+const chats = require('./data/data')
+const userRoutes = require('./routes/userRoutes');
+const chatRoutes = require('./routes/chatRoutes')
+const messageRoutes = require('./routes/messageRoutes')
+const { notFound, errorHandler } = require('./middlewares/errorMiddlware');
+
 
 connectDb()
+dotenv.config({path: './.env'})
+
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
