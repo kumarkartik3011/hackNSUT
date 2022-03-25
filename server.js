@@ -12,6 +12,11 @@ dotenv.config({path: './.env'})
 connectDb()
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
+
+
+app.use(errorHandler)
+
+
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
