@@ -10,16 +10,20 @@ const connectDb = require('./config/db')
 dotenv.config({path: './.env'})
 
 connectDb()
+
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
-
-
-app.use(errorHandler)
-
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
+
+app.use('/api/users', userRoutes)
+app.use('/api/chats', chatRoutes)
+app.use('/api/messages', messageRoutes)
+app.use(notFound)
+app.use(errorHandler)
+
 const PORT = process.env.PORT || 4000
 
 app.listen(PORT, () => {
