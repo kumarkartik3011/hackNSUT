@@ -15,9 +15,7 @@ const chatRoutes = require('./routes/chatRoutes')
 const messageRoutes = require('./routes/messageRoutes')
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware')
 
-
 connectDb()
-
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())

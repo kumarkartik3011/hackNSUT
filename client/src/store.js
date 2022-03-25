@@ -1,6 +1,10 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
+import { chatAllListReducer, chatCurrentSetReducer, chatGroupCreateReducer, chatOneToOneCreateReducer, chatOneToOneListReducer } from './reducers/chatReducers'
+import { messageListAllReducer, messageSendReducer } from './reducers/messageReducers'
+import { userLoginReducer, userRegisterReducer, userSearchReducer } from './reducers/userReducers'
+
 
 const reducers = combineReducers({
     userRegister: userRegisterReducer,

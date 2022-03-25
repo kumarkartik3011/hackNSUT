@@ -25,6 +25,8 @@ const Box1 = ({isOpen, onOpen, onClose, isOpenCreateChat, onOpenCreateChat, onCl
     const { loading, chats, error } = chatAllList
     const chatOneToOneCreate = useSelector(state => state.chatOneToOneCreate)
     const {loading: createChatLoading, chat: createdChat, error: createChatError} = chatOneToOneCreate
+    const chatGroupCreate = useSelector(state => state.chatGroupCreate)
+    const {chat: createdGroupChat} = chatGroupCreate
     const messageSend = useSelector(state => state.messageSend)
     const { message } = messageSend
     const chatCurrentSet = useSelector(state => state.chatCurrentSet)
@@ -33,7 +35,7 @@ const Box1 = ({isOpen, onOpen, onClose, isOpenCreateChat, onOpenCreateChat, onCl
         if(userInfo){
             dispatch(fetchAllChats(localSearch))
         }
-    }, [createdChat, localSearch, message])
+    }, [createdChat, localSearch, message, createdGroupChat])
     const logoutHandler = () => {
         dispatch(logout())
     }
