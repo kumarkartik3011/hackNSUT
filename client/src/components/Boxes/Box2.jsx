@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import AgoraRTM from 'agora-rtm-sdk'
+import io from "socket.io-client";
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon'
-import { Avatar, Box, Button, Flex, Icon, Input, Spinner, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, Flex, Icon, Input, Spacer, Spinner, Text } from '@chakra-ui/react'
 import { fetchAllMessages, sendMessage } from '../../actions/messageActions'
 import MessageScrollList from '../MessageScrollList'
 import { getReciever } from '../../utils/chatLogics'
@@ -9,6 +11,8 @@ import MessageLoader from '../MessageLoader'
 import groupIcon from '../../img/groupIcon.png'
 
 const Box2 = ({setSideBox}) => {
+    const appID = "974602bf7be54c92b0c9b852d64a8b65"
+    const token = null
     const groupChatImgURL = `https://nirc.icai.org/wp-content/plugins/profilegrid-user-profiles-groups-and-communities/public/partials/images/default-group.png`
     const [messageField, setMessageField] = useState("")
     const dispatch = useDispatch()
@@ -24,11 +28,19 @@ const Box2 = ({setSideBox}) => {
         dispatch(sendMessage(currentChat._id, messageField))
         setMessageField("")
     }
+    const initiateRTM = async () => {
+        const client = await AgoraRTM.createInstance(appID)
+        await client.login({uid: parseInt(currentChat._id), token})
+        const channel = await client.createChannel(currentChat && currentChat.isGroupChat ? `${currentChat.name}` : 'sender')
+        await channel.join()
+    }
     useEffect(() => {
         if(currentChat){
             dispatch(fetchAllMessages(currentChat._id))
+            initiateRTM()
         }
-    }, [currentChat])
+    }, [currentChat]) 
+
     return (
         <Box bg="white" w="75%" minWidth="50%" borderLeft="1px solid rgb(229,229,229)">
                 { currentChat ? (
@@ -50,7 +62,7 @@ const Box2 = ({setSideBox}) => {
                         <Flex px={2}>
                             <Button variant='flushed' _hover={{backgroundColor: "rgba(229,229,229)"}}><Icon as={InsertEmoticonIcon}/></Button>
                             <Input placeholder="Type a Message" borderRadius='25px' w='90%' value={messageField} onChange={(e) => setMessageField(e.target.value)} onKeyPress={(e) => (messageField.trim() !== ""  && e.key === 'Enter') && sendMessageHandler()}/>
-                            <Button onClick={sendMessageHandler} disabled={(messageField === "" || messageField) && true} >Send</Button>
+                            <Button onClick={sendMessageHandler} disabled={messageField === "" || messageField.trim() === ""} >Send</Button>
                         </Flex>
                     </Flex>
                 </Flex>)
